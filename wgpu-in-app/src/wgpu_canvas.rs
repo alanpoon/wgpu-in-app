@@ -3,7 +3,7 @@ use app_surface::{AppSurface, SurfaceFrame};
 
 pub struct WgpuCanvas {
     pub app_surface: AppSurface,
-    example: Box<dyn Example>,
+    example: Box<dyn Example+Send>,
 }
 
 #[allow(dead_code)]
@@ -39,7 +39,7 @@ impl WgpuCanvas {
         self.example = Self::create_a_example(&mut self.app_surface, index);
     }
 
-    fn create_a_example(app_surface: &mut AppSurface, index: i32) -> Box<dyn Example> {
+    fn create_a_example(app_surface: &mut AppSurface, index: i32) -> Box<dyn Example+Send> {
         if index == 0 {
             Box::new(Boids::new(app_surface))
         } else if index == 1 {
@@ -49,7 +49,8 @@ impl WgpuCanvas {
         } else if index == 3 {
             Box::new(Water::new(app_surface))
         } else if index == 4 {
-            Box::new(Shadow::new(app_surface))
+            Box::new(Water::new(app_surface))
+            //Box::new(Shadow::new(app_surface))
         } else {
             Box::new(HDRImageView::new(app_surface))
         }

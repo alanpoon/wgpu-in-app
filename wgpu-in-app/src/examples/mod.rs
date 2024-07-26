@@ -25,6 +25,9 @@ pub use msaa_line::MSAALine;
 mod cube;
 pub use cube::Cube;
 
+mod amb;
+pub use amb::Amb;
+
 mod point_gen;
 mod water;
 pub use water::Water;

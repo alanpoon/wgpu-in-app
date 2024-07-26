@@ -14,7 +14,8 @@ fn main() {
         event_loop::EventLoop,
         keyboard::{Key, KeyCode, NamedKey, PhysicalKey},
     };
-
+    use std::{sync::{Arc,Mutex}, thread::sleep, time::Duration};
+    use rand::Rng;
     let events_loop = EventLoop::new().unwrap();
     let size = winit::dpi::Size::Logical(winit::dpi::LogicalSize {
         width: 1200.0,
@@ -28,8 +29,17 @@ fn main() {
     let window = builder.build(&events_loop).unwrap();
 
     let app_view = pollster::block_on(AppSurface::new(window));
-    let mut canvas = WgpuCanvas::new(app_view, 0);
+    let canvas = Arc::new(Mutex::new(WgpuCanvas::new(app_view, 0)));
+    let  canvas_c = canvas.clone();
+    std::thread::spawn(move||{
+        loop{
 
+            sleep(Duration::from_secs(5));
+            let num = rand::thread_rng().gen_range(0,5);
+            canvas_c.lock().unwrap().change_example(num);
+        }
+        
+    });
     let _ = events_loop.run(move |event, elwt| {
         if let Event::WindowEvent { event, .. } = event {
             match event {
@@ -46,7 +56,7 @@ fn main() {
                     if size.width == 0 || size.height == 0 {
                         println!("Window minimized!");
                     } else {
-                        canvas.resize();
+                        canvas.lock().unwrap().resize();
                     }
                 }
                 WindowEvent::KeyboardInput {
@@ -57,15 +67,21 @@ fn main() {
                             ..
                         },
                     ..
-                } => match key {
-                    KeyCode::Digit1 => canvas.change_example(1),
-                    KeyCode::Digit2 => canvas.change_example(2),
-                    KeyCode::Digit3 => canvas.change_example(3),
-                    KeyCode::Digit4 => canvas.change_example(4),
-                    KeyCode::Digit5 => canvas.change_example(5),
-                    _ => canvas.change_example(0),
-                },
+                } =>{
+                    let mut canvas = canvas.lock().unwrap();
+                    match key {
+                    
+                        KeyCode::Digit1 => canvas.change_example(1),
+                        KeyCode::Digit2 => canvas.change_example(2),
+                        KeyCode::Digit3 => canvas.change_example(3),
+                        KeyCode::Digit4 => canvas.change_example(4),
+                        KeyCode::Digit5 => canvas.change_example(5),
+                        _ => canvas.change_example(0),
+                    }
+                 } 
+                ,
                 WindowEvent::RedrawRequested => {
+                    let mut canvas = canvas.lock().unwrap();
                     canvas.enter_frame();
                     canvas.app_surface.view.as_ref().unwrap().request_redraw();
                 }
