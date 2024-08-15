@@ -109,3 +109,5 @@ WGPU_BACKEND=gl cargo run --features=angle
 WGPU_BACKEND=vk cargo run --features=vulkan-portability
 # Then, press 0, 1, 2, 3, 4 keys change running example.
 ```
+cargo build --target aarch64-apple-ios-sim --release
+cp target/aarch64-apple-ios-sim/release/libwinitios.a Apple/libs/release

@@ -9,22 +9,23 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet var metalV: MetalView!
     var wgpuCanvas: OpaquePointer?
-    
+    var once = false
     lazy var displayLink: CADisplayLink = {
         CADisplayLink.init(target: self, selector: #selector(enterFrame))
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+       print("viewDidLoad")
         self.displayLink.add(to: .current, forMode: .default)
         self.displayLink.isPaused = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear")
         super.viewDidAppear(animated)
         self.view.backgroundColor = .white
-        if wgpuCanvas == nil {
+        if wgpuCanvas == nil {	
             let viewPointer = Unmanaged.passUnretained(self.metalV).toOpaque()
             let metalLayer = Unmanaged.passUnretained(self.metalV.layer).toOpaque()
             let maximumFrames = UIScreen.main.maximumFramesPerSecond
@@ -42,23 +43,21 @@ class ViewController: UIViewController {
     }
     
     @objc func enterFrame() {
+        
         guard let canvas = self.wgpuCanvas else {
             return
         }
+        
         // call rust
-        enter_frame(canvas)
+        if !once{
+            print("enterFrame")
+            enter_frame(canvas)
+            once = true
+            print("enterFrame after")
+        }
+        
     }
     
-    @IBAction func changeExample(sender: UISegmentedControl) {
-        guard let canvas = self.wgpuCanvas else {
-            return
-        }
-        var index = sender.selectedSegmentIndex
-        if index == 2 {
-            index = 5
-        }
-        change_example(canvas, Int32(index))
-    }
 
 }
 

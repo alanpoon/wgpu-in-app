@@ -13,7 +13,7 @@ use ambient_app::ffi::IOSViewObj;
 pub fn enter_frame(obj: *mut libc::c_void) {
     // 获取到指针指代的 Rust 对象的可变借用
     let obj = unsafe { &mut *(obj as *mut AppWrapper) };
-    obj.run_with_view(client::init);
+    //obj.run_with_view(client::init);
 }
 #[no_mangle]
 #[cfg(target_os="ios")]

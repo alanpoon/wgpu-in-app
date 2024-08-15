@@ -111,7 +111,11 @@ pub fn new_ios(obj:ambient_app::ffi::IOSViewObj)->AppWrapper{
     let is_debug = false;
     //box_init();
     tracing::info!("before event_loop");
-    let  aw = AppWrapper::new_with_view(obj,Box::new(||{}));
+    println!("before new_with_vie");
+    
+    let  mut aw = AppWrapper::new_with_view(obj,Box::new(||{}));
+    aw.run_with_view(client::init);
+    println!("runwithview");
     return aw
 
 }
