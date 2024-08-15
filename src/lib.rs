@@ -8,6 +8,18 @@ use ambient_app::ffi::IOSViewObj;
 //     // let event_loop = EventLoopBuilder::new().build();
 //     // ambient::new(event_loop);
 // }
+use std::ffi::CString;
+use tracing::{event, Level};
+use tracing_subscriber::{layer::SubscriberExt, Registry};
+use tracing_subscriber::fmt::Layer;
+
+// Function to wrap NSLog
+fn nslog(message: &str) {
+    let cstr = CString::new(message).unwrap();
+    unsafe {
+        objc::msg_send![class!(NSLog), NSLog(cstr.as_ptr())];
+    }
+}
 #[no_mangle]
 #[cfg(target_os="ios")]
 pub fn enter_frame(obj: *mut libc::c_void) {
@@ -18,6 +30,17 @@ pub fn enter_frame(obj: *mut libc::c_void) {
 #[no_mangle]
 #[cfg(target_os="ios")]
 pub fn create_wgpu_canvas(ios_obj: IOSViewObj) -> *mut libc::c_void {
+    let fmt_layer = Layer::new()
+        .json()
+        .with_writer(move |buf| {
+            // Write log to NSLog
+            nslog(&buf);
+        });
+
+    let subscriber = Registry::default().with(fmt_layer);
+
+    tracing::subscriber::set_global_default(subscriber)
+        .expect("Setting default subscriber failed");
     println!(
         "create_wgpu_canvas, maximum frames: {}",
         ios_obj.maximum_frames
