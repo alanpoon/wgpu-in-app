@@ -23,6 +23,18 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         print("viewDidAppear")
+        if let resourcePath = Bundle.main.resourcePath {
+            let resourceURL = URL(fileURLWithPath: resourcePath).appendingPathComponent("test.rtf")
+            print("File URL: \(resourceURL)")
+            do {
+                print("content")
+                let content = try String(contentsOf: resourceURL, encoding: .utf8)
+                
+                print(content)
+            } catch{
+                print("\(error)")
+            }
+        }
         super.viewDidAppear(animated)
         self.view.backgroundColor = .white
         if wgpuCanvas == nil {	

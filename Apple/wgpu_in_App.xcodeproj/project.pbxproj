@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39657F342C7F09C70000EF28 /* localhost.crt in Resources */ = {isa = PBXBuildFile; fileRef = 39657F312C7F08660000EF28 /* localhost.crt */; };
+		39657F352C7F09C70000EF28 /* localhost.key in Resources */ = {isa = PBXBuildFile; fileRef = 39657F322C7F08660000EF28 /* localhost.key */; };
+		39657F372C7F0BEA0000EF28 /* test.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 39657F362C7F0BEA0000EF28 /* test.rtf */; };
 		39F1F9482C69141700A90F21 /* libwinitios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F1F9452C69140800A90F21 /* libwinitios.a */; };
 		39F1F94A2C69160100A90F21 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F1F9492C69160100A90F21 /* libc++.tbd */; };
 		39F1F94C2C69161600A90F21 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F1F94B2C69161600A90F21 /* CoreMotion.framework */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39657F312C7F08660000EF28 /* localhost.crt */ = {isa = PBXFileReference; lastKnownFileType = file; path = localhost.crt; sourceTree = "<group>"; };
+		39657F322C7F08660000EF28 /* localhost.key */ = {isa = PBXFileReference; lastKnownFileType = file; path = localhost.key; sourceTree = "<group>"; };
+		39657F362C7F0BEA0000EF28 /* test.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = test.rtf; sourceTree = "<group>"; };
 		39F1E7F12C69140800A90F21 /* dep-lib-ab_glyph_rasterizer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dep-lib-ab_glyph_rasterizer"; sourceTree = "<group>"; };
 		39F1E7F22C69140800A90F21 /* invoked.timestamp */ = {isa = PBXFileReference; lastKnownFileType = text; path = invoked.timestamp; sourceTree = "<group>"; };
 		39F1E7F32C69140800A90F21 /* lib-ab_glyph_rasterizer */ = {isa = PBXFileReference; lastKnownFileType = text; path = "lib-ab_glyph_rasterizer"; sourceTree = "<group>"; };
@@ -3887,6 +3893,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39657F332C7F08660000EF28 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				39657F312C7F08660000EF28 /* localhost.crt */,
+				39657F322C7F08660000EF28 /* localhost.key */,
+				39657F362C7F0BEA0000EF28 /* test.rtf */,
+			);
+			name = assets;
+			path = ../assets;
+			sourceTree = "<group>";
+		};
 		3981DB452C6CC803003B3272 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -12593,6 +12610,7 @@
 		AD4B1FE026EB1B90008A6AEE = {
 			isa = PBXGroup;
 			children = (
+				39657F332C7F08660000EF28 /* assets */,
 				3981DB452C6CC803003B3272 /* libs */,
 				AD0CB7E127A4061E0041811B /* base */,
 				AD4B1FEB26EB1B90008A6AEE /* wgpu_phone */,
@@ -12689,8 +12707,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39657F342C7F09C70000EF28 /* localhost.crt in Resources */,
+				39657F352C7F09C70000EF28 /* localhost.key in Resources */,
 				AD4B1FF926EB1B91008A6AEE /* LaunchScreen.storyboard in Resources */,
 				AD4B1FF626EB1B91008A6AEE /* Assets.xcassets in Resources */,
+				39657F372C7F0BEA0000EF28 /* test.rtf in Resources */,
 				AD4B1FF426EB1B90008A6AEE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

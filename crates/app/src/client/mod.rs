@@ -82,6 +82,7 @@ pub async fn init(app:&mut App,android_app:AndroidApp){
     .with(active_camera(), 0.)
     .with(main_scene(), ())
     .spawn(world);
+    
 }
 #[cfg(not(target_os = "android"))]
 pub async fn init(app:&mut App){
@@ -93,7 +94,7 @@ pub async fn init(app:&mut App){
         .with(cast_shadows(), ())
         .with(outline(), Vec4::ONE)
         .spawn_static(world);
-    Quad.el().with(scale(), Vec3::ONE * 10.).spawn_static(world);
+    Quad.el().with(scale(), Vec3::ONE * 100.).spawn_static(world);
 
     ambient_cameras::spherical::new(
         vec3(0., 0., 0.),
@@ -102,6 +103,8 @@ pub async fn init(app:&mut App){
     .with(active_camera(), 0.)
     .with(main_scene(), ())
     .spawn(world);
+    
+    println!("client init..");
 }
 #[cfg(target_os = "android")]
 pub async fn init2(app: &mut App,android_app:AndroidApp) {

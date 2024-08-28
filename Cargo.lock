@@ -126,6 +126,8 @@ dependencies = [
  "anyhow",
  "glam",
  "image",
+ "libc",
+ "objc",
  "once_cell",
  "serde",
  "tokio",

@@ -20,9 +20,11 @@ use std::path::PathBuf;
 use winit::platform::android::activity::AndroidApp;
 use ambient_audio::AudioStream;
 use ambient_app::{ffi::IOSViewObj,AppWrapper};
+pub mod ios;
 #[cfg(target_os = "android")]
 pub fn new_main(eventloop:EventLoop<()>,android_app:AndroidApp){
     tracing::info!("start main..");
+    
     ambient_dirs::init(android_app.clone());
 
     ambient_git_rev_init::init().expect("Should be called exactly once");
@@ -44,7 +46,7 @@ pub fn new_main(eventloop:EventLoop<()>,android_app:AndroidApp){
 
     let is_debug = false;
     //box_init();
-
+   
     tracing::info!("before event_loop");
     let  aw = AppWrapper::new_with_event_loop(eventloop);
 
@@ -90,7 +92,8 @@ pub fn new(eventloop:EventLoop<()>){
 }
 #[cfg(target_os="ios")]
 pub fn new_ios(obj:ambient_app::ffi::IOSViewObj)->AppWrapper{
-
+    let resource_path = ios::get_resource_path();
+    println!("resource_path {:?}",resource_path);
     ambient_git_rev_init::init().expect("Should be called exactly once");
 
     shared::components::init().unwrap();
@@ -113,7 +116,7 @@ pub fn new_ios(obj:ambient_app::ffi::IOSViewObj)->AppWrapper{
     tracing::info!("before event_loop");
     println!("before new_with_vie");
     
-    let  mut aw = AppWrapper::new_with_view(obj,Box::new(||{}),client::init);
+    let  mut aw = AppWrapper::new_with_view(obj,Box::new(||{}),client::init2);
     //aw.run_with_view(client::init);
     println!("runwithview");
     return aw
