@@ -210,19 +210,50 @@ pub async fn init2(app: &mut App,android_app:AndroidApp) {
     .spawn_interactive(&mut app.world);
 
 }
+fn append_to_path(p: PathBuf, s: &str) -> PathBuf {
+    let mut p = p.into_os_string();
+    p.push(s);
+    p.into()
+}
+use std::fs;
+use std::io;
 
+fn list_files_in_directory(dir: &PathBuf) -> io::Result<()> {
+    let paths = fs::read_dir(dir)?;
+
+    for path in paths {
+        let path = path?.path();
+        if path.is_dir() {
+            println!("Directory: {:?}", path);
+        } else {
+            println!("File: {:?}", path);
+        }
+    }
+
+    Ok(())
+}
+fn read_file_as_bytes(filename: &PathBuf) -> io::Result<Vec<u8>> {
+    let mut file = File::open(filename)?; // Open the file
+    let mut buffer = Vec::new(); // Create a buffer to store the bytes
+    file.read_to_end(&mut buffer)?; // Read the file's content into the buffer
+    Ok(buffer) // Return the buffer with the file's content
+}
 use std::fs::OpenOptions;
-use std::io::{self, Write};
+use std::fs::File;
+use std::io::{ Write,Read};
 #[cfg(target_os = "ios")]
 pub async fn init2(app: &mut App) {
     tracing::info!("init....");
     let assets: AssetCache = app.world.resource(asset_cache()).clone();
-    let Some(mut dir) = ambient_dirs::dirs() else{
-        return;
-    };
-    let cert_asset = std::fs::read_to_string(dir.push("localhost.crt")).unwrap();
+    let mut dir= ambient_dirs::dirs();
+    list_files_in_directory(&dir);
+    println!("dir {:?}",dir);
+    let cert_path = append_to_path(dir,"/localhost.crt");
+    println!("cert_path{:?}",cert_path);
+    //let cert_asset = std::fs::read_to_string(cert_path).unwrap();
     //let cert = Some(BufReader::new(cert_asset).fill_buf().unwrap().to_vec());
-    let cert = Some(cert_asset.into_bytes());
+    let cert = Some(read_file_as_bytes(&cert_path).unwrap());
+    //let cert = Some(cert_asset.into_bytes());
     tracing::info!("cert....{:?}",cert);
     let server_addr= async move {
         //let Some(mut host) = Some(String::from("eu.proxy.ambient.run:9131")) else {
