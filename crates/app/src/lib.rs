@@ -20,6 +20,7 @@ use std::path::PathBuf;
 use winit::platform::android::activity::AndroidApp;
 use ambient_audio::AudioStream;
 use ambient_app::{ffi::IOSViewObj,AppWrapper};
+use ambient_dirs::dirs;
 pub mod ios;
 #[cfg(target_os = "android")]
 pub fn new_main(eventloop:EventLoop<()>,android_app:AndroidApp){
@@ -95,7 +96,7 @@ pub fn new_ios(obj:ambient_app::ffi::IOSViewObj)->AppWrapper{
     let resource_path = ios::get_resource_path();
     println!("resource_path {:?}",resource_path);
     ambient_git_rev_init::init().expect("Should be called exactly once");
-
+    ambient_dirs::init();
     shared::components::init().unwrap();
 
     let audio_bool = false;
