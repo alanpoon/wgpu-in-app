@@ -358,8 +358,11 @@ name = "ambient_dirs"
 version = "0.3.1"
 dependencies = [
  "android-activity",
+ "core-graphics 0.23.1",
  "directories",
  "lazy_static",
+ "libc",
+ "objc",
 ]
 
 [[package]]

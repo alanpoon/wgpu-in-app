@@ -44,6 +44,7 @@ class ViewController: UIViewController，WKNavigationDelegate {
         self.view.backgroundColor = .white
         if wgpuCanvas == nil {	
             let viewPointer = Unmanaged.passUnretained(self.metalV).toOpaque()
+            
             let metalLayer = Unmanaged.passUnretained(self.metalV.layer).toOpaque()
             let maximumFrames = UIScreen.main.maximumFramesPerSecond
             
