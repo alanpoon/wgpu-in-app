@@ -6,9 +6,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController，WKNavigationDelegate {
     @IBOutlet var metalV: MetalView!
     var wgpuCanvas: OpaquePointer?
+    var webView: WKWebView!
     var once = false
     lazy var displayLink: CADisplayLink = {
         CADisplayLink.init(target: self, selector: #selector(enterFrame))
@@ -19,6 +20,10 @@ class ViewController: UIViewController {
        print("viewDidLoad")
         self.displayLink.add(to: .current, forMode: .default)
         self.displayLink.isPaused = true
+        let webViewConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
+        webView.navigationDelegate = self
+        view = webView
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,7 +58,27 @@ class ViewController: UIViewController {
         super.viewWillDisappear(animated)
         displayLink.isPaused = true
     }
-    
+    @IBAction func changeExample(sender: UISegmentedControl) {
+        guard let canvas = self.wgpuCanvas else {
+                return
+        }
+        var index = sender.selectedSegmentIndex
+        // if index == 2 {
+        //     index = 5
+        // }
+        if index !=0{
+            webView.idHidden = true
+            metalV.isHidden = false
+        }else{
+            let url = URL(string:"https://ambient.run/packages/h3gv2vnpcajq75woh5nmiemeahfpaku4")!
+            webView.load(URLRequest(url: url))
+            webView.allowsBackForwardNavigationGestures = true
+            webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+            metalV.isHidden = true
+            webView.isHidden = false
+        }
+        //change_example(canvas, Int32(index))
+    }
     @objc func enterFrame() {
         
         guard let canvas = self.wgpuCanvas else {
